@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+# Post-installazione AgentOS
+
+# Crea le directory necessarie
+mkdir -p /var/lib/agentd
+mkdir -p /var/lib/agent-fs
+mkdir -p /etc/agentos
+
+# Copia la configurazione di default se non esiste
+if [ ! -f /etc/agentos/config.yaml ]; then
+    cp /usr/share/agentos/config.yaml /etc/agentos/config.yaml
+    echo "Configurazione di default installata in /etc/agentos/config.yaml"
+fi
+
+# Installa la sessione Wayland per GDM/SDDM
+if [ -d /usr/share/wayland-sessions ]; then
+    cp /usr/share/agentos/agentos.desktop /usr/share/wayland-sessions/agentos.desktop
+    echo "Sessione AgentOS disponibile nel login manager"
+fi
+
+# Abilita i servizi (ma non avviarli — si avviano con la sessione)
+systemctl --user daemon-reload 2>/dev/null || true
+
+echo ""
+echo "╔══════════════════════════════════════════╗"
+echo "║  AgentOS installato con successo!        ║"
+echo "║                                          ║"
+echo "║  Per iniziare:                           ║"
+echo "║  1. Esci dalla sessione corrente         ║"
+echo "║  2. Al login, seleziona 'AgentOS'        ║"
+echo "║                                          ║"
+echo "║  Oppure avvia in modalità finestra:      ║"
+echo "║  $ agent-shell --backend winit           ║"
+echo "╚══════════════════════════════════════════╝"
+echo ""

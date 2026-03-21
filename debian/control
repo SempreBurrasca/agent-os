@@ -1,0 +1,18 @@
+Package: agentos
+Version: 0.1.0
+Section: x11
+Priority: optional
+Architecture: amd64
+Depends: bubblewrap, fuse3, tesseract-ocr, tesseract-ocr-ita, poppler-utils, pandoc, foot, pipewire
+Recommends: ollama, firefox
+Suggests: tesseract-ocr-eng
+Maintainer: AgentOS Team <dev@agentos.dev>
+Description: AgentOS — Desktop environment agentico per Linux
+ AgentOS è un desktop environment dove l'interfaccia primaria
+ è un agente AI. Include un compositor Wayland, un daemon
+ intelligente con LLM, e un filesystem semantico.
+ .
+ Componenti:
+  - agentd: daemon AI con Guardian, Executor, Memory
+  - agent-shell: compositor Wayland con area conversazione
+  - agent-fs: filesystem semantico con ricerca per significato

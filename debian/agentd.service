@@ -1,0 +1,23 @@
+[Unit]
+Description=AgentOS Daemon — il cervello del sistema
+After=network.target ollama.service
+Wants=ollama.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/agentd
+Restart=on-failure
+RestartSec=5
+Environment=RUST_LOG=agentd=info
+RuntimeDirectory=agentd
+StateDirectory=agentd
+
+# Sicurezza systemd
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/var/lib/agentd /run/agentd
+PrivateTmp=true
+NoNewPrivileges=false
+
+[Install]
+WantedBy=graphical-session.target

@@ -1,0 +1,21 @@
+[Unit]
+Description=AgentOS Filesystem Semantico
+After=agentd.service ollama.service
+Wants=agentd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/agent-fs
+Restart=on-failure
+RestartSec=5
+Environment=RUST_LOG=agent_fs=info
+RuntimeDirectory=agent-fs
+StateDirectory=agent-fs
+
+# Sicurezza systemd
+ProtectSystem=strict
+ReadWritePaths=/var/lib/agent-fs /run /agent-fs
+PrivateTmp=true
+
+[Install]
+WantedBy=graphical-session.target

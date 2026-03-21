@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=AgentOS
+Comment=Desktop environment agentico
+Exec=/usr/bin/agent-shell --backend drm
+Type=Application
+DesktopNames=AgentOS

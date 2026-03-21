@@ -1,0 +1,44 @@
+[package]
+name = "agentd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "AgentOS daemon — il cervello del sistema"
+
+[dependencies]
+agentos-common = { path = "../common" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_yaml = { workspace = true }
+tokio = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+anyhow = { workspace = true }
+reqwest = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+
+# SQLite per memory e audit
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# Regex per Guardian
+regex = "1"
+
+# Directory utente
+dirs = "6"
+
+# Async trait per i backend LLM e i connettori
+async-trait = "0.1"
+
+# Errori tipizzati per i connettori
+thiserror = { workspace = true }
+
+# Lazy static per il registro tool custom
+once_cell = "1"
+
+# File watcher (FSEvents su macOS, inotify su Linux)
+notify = "7"
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+tempfile = "3"

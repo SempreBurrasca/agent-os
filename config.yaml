@@ -1,0 +1,141 @@
+# ============================================================
+# AgentOS — Configurazione di default
+# ============================================================
+
+llm:
+  # Backend: ollama, claude, openai
+  default_backend: openai
+  complex_backend: openai
+  fallback_backend: ollama
+  timeout_secs: 120
+
+ollama:
+  url: "http://localhost:11434"
+  model: "llama3.2"
+  embedding_model: "nomic-embed-text"
+
+claude:
+  # API key caricata da ANTHROPIC_API_KEY env var
+  api_key: ""
+  model: "claude-sonnet-4-20250514"
+  max_tokens: 4096
+
+openai:
+  api_key: ""
+  model: "gpt-4o"
+  max_tokens: 4096
+
+security:
+  # Pattern aggiuntivi per zona gialla (richiedono conferma)
+  yellow_patterns:
+    - pattern: "^sudo\\s+"
+      description: "Comandi con privilegi elevati"
+    - pattern: "^apt\\s+(install|remove|purge|autoremove)"
+      description: "Gestione pacchetti"
+    - pattern: "^systemctl\\s+(start|stop|restart|enable|disable)"
+      description: "Gestione servizi systemd"
+    - pattern: "^mv\\s+"
+      description: "Spostamento file"
+    - pattern: "^cp\\s+-r"
+      description: "Copia ricorsiva"
+    - pattern: "^rm\\s+"
+      description: "Rimozione file"
+    - pattern: "^pip\\s+install"
+      description: "Installazione pacchetti Python"
+    - pattern: "^cargo\\s+install"
+      description: "Installazione pacchetti Rust"
+
+  # Comandi sicuri — esecuzione diretta senza sandbox
+  command_whitelist:
+    - ls
+    - cat
+    - pwd
+    - date
+    - whoami
+    - hostname
+    - uname
+    - head
+    - tail
+    - wc
+    - sort
+    - uniq
+    - grep
+    - find
+    - echo
+    - printf
+    - df
+    - du
+    - free
+    - uptime
+    - file
+    - stat
+    - realpath
+    - basename
+    - dirname
+
+  sandbox_by_default: true
+
+sandbox:
+  timeout_secs: 30
+  writable_paths:
+    - "/tmp"
+  disable_network: true
+
+behavior:
+  language: "it"
+  explain_before_execute: true
+  max_plan_steps: 10
+  show_briefing_on_login: true
+
+fs:
+  watch_paths:
+    - "/home"
+  ignore_extensions:
+    - ".o"
+    - ".so"
+    - ".a"
+    - ".pyc"
+    - ".class"
+    - ".swp"
+    - ".tmp"
+    - ".lock"
+  ignore_dirs:
+    - ".git"
+    - ".cache"
+    - "node_modules"
+    - "__pycache__"
+    - ".venv"
+    - "target"
+  chunk_size: 500
+  mount_point: "/agent-fs"
+
+shell:
+  conversation_width_pct: 30
+  terminal: "foot"
+  default_workspace_mode: focus
+  notification_duration_ms: 5000
+
+# MCP (Model Context Protocol) — server esterni di tool
+# Ogni server espone tool aggiuntivi via JSON-RPC 2.0 su HTTP.
+# L'agente si connette all'avvio ed elenca i tool disponibili.
+#
+# mcp:
+#   servers:
+#     - name: "example"
+#       url: "https://example.com/mcp"
+#       headers:
+#         X-Api-Key: "your-key-here"
+#     - name: "local"
+#       url: "http://localhost:8080/mcp"
+
+# Connettori email e calendario
+# Configura Google (Gmail + Calendar) e/o Microsoft (Outlook + Calendar).
+# I token OAuth vengono salvati in ~/.agentos/tokens/ dopo /connect.
+#
+# connectors:
+#   google:
+#     client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+#     client_secret: "YOUR_GOOGLE_CLIENT_SECRET"
+#   microsoft:
+#     client_id: "YOUR_AZURE_APP_CLIENT_ID"
+#     tenant_id: "common"  # oppure il tenant specifico della tua organizzazione
